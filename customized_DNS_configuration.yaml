@@ -22,7 +22,7 @@ spec:
 
 #################
 ## 2. Check if the configuration was correctly applied:
-  #kubectl exec -it dns-example — cat /etc/resolv.conf
+  #kubectl exec -it dns-example -- cat /etc/resolv.conf
     #nameserver 1.2.3.4
     #search ns1.svc.cluster.local my.dns.search.suffix
     #options ndots:2
