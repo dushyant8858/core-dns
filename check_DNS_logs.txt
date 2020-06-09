@@ -1,0 +1,37 @@
+## Task 1 (Terminal One) - Resize the CoreDNS Deployment to one:
+ 
+kubectl -n kube-system scale deployment coredns --replicas=1
+ 
+## Task 2 (Terminal One) - Launch a pod that will act as a client:
+ 
+kubectl run ubuntu --image=ubuntu --generator=run-pod/v1 sleep 1d
+ 
+kubectl exec -it ubuntu sh
+# apt-get update && apt-get install inetutils-ping -y
+ 
+## Task 3 (Terminal Two) - Capture traffic on the CoreDNS pod:
+ 
+# yum install tcpdump -y
+ 
+# ps ax | grep coredns
+21105 pts/0    S+     0:00 grep --color=auto coredns
+21927 ?        Ssl    6:03 /coredns -conf /etc/coredns/Corefile
+ 
+# nsenter -n -t 21927 tcpdump udp port 53
+ 
+ 
+ 
+## Task 4 (Terminal One) - Perform a DNS query using ping(from the Ubuntu pod):
+ 
+# ping -c1 amazon.com (http://amazon.com/) 
+ 
+ 
+ 
+## Task 5 (Terminal Two) - Checking the queries executed by the client:
+ 
+Client > CoreDNS: 21057+ A? amazon.com.default.svc.cluster.local. (54)
+Client > CoreDNS: 12439+ AAAA? amazon.com.default.svc.cluster.local. (54)
+CoreDNS > Client: 21057 NXDomain* 0/1/0 (147)
+CoreDNS > Client: 12439 NXDomain* 0/1/0 (147)
+...
+ 
