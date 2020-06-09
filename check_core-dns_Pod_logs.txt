@@ -7,27 +7,30 @@
  
    kubectl run ubuntu --image=ubuntu --generator=run-pod/v1 sleep 1d
  
-   kubectl exec -it ubuntu sh
+   kubectl exec -it ubuntu /bin/bash
    # apt-get update && apt-get install inetutils-ping -y
- 
+   OR
+   # apt-get update && apt-get install dnsutils -y 
+                        # Geographic area: US, Time zone: Central
  
  
 ## Task 3 (Terminal Two) - On Worker Node capture traffic on the CoreDNS pod:
  
-# sudo yum install tcpdump -y
- 
-# ps ax | grep coredns
-21105 pts/0    S+     0:00 grep --color=auto coredns
-21927 ?        Ssl    6:03 /coredns -conf /etc/coredns/Corefile
- 
-# nsenter -n -t 21927 tcpdump udp port 53
- 
+   # sudo yum install tcpdump -y
+
+   # ps ax | grep coredns
+   21105 pts/0    S+     0:00 grep --color=auto coredns
+   21927 ?        Ssl    6:03 /coredns -conf /etc/coredns/Corefile
+
+   # nsenter -n -t 21927 tcpdump udp port 53
+
  
  
 ## Task 4 (Terminal One) - Perform a DNS query using ping(from the Ubuntu pod):
  
-# ping -c1 amazon.com (http://amazon.com/) 
- 
+   # ping -c1 amazon.com (http://amazon.com/) 
+   OR
+   # dig amazon.com +short
  
  
 ## Task 5 (Terminal Two) - Checking the queries executed by the client:
@@ -37,4 +40,17 @@ Client > CoreDNS: 12439+ AAAA? amazon.com.default.svc.cluster.local. (54)
 CoreDNS > Client: 21057 NXDomain* 0/1/0 (147)
 CoreDNS > Client: 12439 NXDomain* 0/1/0 (147)
 ...
- 
+23:28:18.081101 IP ip-192-168-51-133.us-east-2.compute.internal.45089 > ip-192-168-81-109.us-east-2.compute.internal.domain: 38643+ A? amazon.com.default.svc.cluster.local. (54)
+23:28:18.081300 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.45089: 38643 NXDomain*- 0/1/0 (147)
+23:28:18.082018 IP ip-192-168-51-133.us-east-2.compute.internal.60101 > ip-192-168-81-109.us-east-2.compute.internal.domain: 32820+ A? amazon.com.svc.cluster.local. (46)
+23:28:18.082152 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.60101: 32820 NXDomain*- 0/1/0 (139)
+23:28:18.082844 IP ip-192-168-51-133.us-east-2.compute.internal.50389 > ip-192-168-81-109.us-east-2.compute.internal.domain: 17568+ A? amazon.com.cluster.local. (42)
+23:28:18.082946 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.50389: 17568 NXDomain*- 0/1/0 (135)
+23:28:18.083626 IP ip-192-168-51-133.us-east-2.compute.internal.45315 > ip-192-168-81-109.us-east-2.compute.internal.domain: 2739+ A? amazon.com.us-east-2.compute.internal. (55)
+23:28:18.083764 IP ip-192-168-81-109.us-east-2.compute.internal.47938 > ip-192-168-0-2.us-east-2.compute.internal.domain: 2739+ A? amazon.com.us-east-2.compute.internal. (55)
+23:28:18.084718 IP ip-192-168-0-2.us-east-2.compute.internal.domain > ip-192-168-81-109.us-east-2.compute.internal.47938: 2739 NXDomain 0/0/0 (55)
+23:28:18.084767 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.45315: 2739 NXDomain 0/0/0 (55)
+23:28:18.085423 IP ip-192-168-51-133.us-east-2.compute.internal.58005 > ip-192-168-81-109.us-east-2.compute.internal.domain: 50998+ A? amazon.com. (28)
+23:28:18.085518 IP ip-192-168-81-109.us-east-2.compute.internal.47938 > ip-192-168-0-2.us-east-2.compute.internal.domain: 50998+ A? amazon.com. (28)
+23:28:18.095343 IP ip-192-168-0-2.us-east-2.compute.internal.domain > ip-192-168-81-109.us-east-2.compute.internal.47938: 50998 3/0/0 A 176.32.98.166, A 205.251.242.103, A 176.32.103.205 (76)
+23:28:18.095457 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.58005: 50998 3/0/0 A 205.251.242.103, A 176.32.103.205, A 176.32.98.166 (106)
