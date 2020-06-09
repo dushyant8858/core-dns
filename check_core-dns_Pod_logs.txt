@@ -1,6 +1,9 @@
 ## Task 1 (Terminal One) - Resize the CoreDNS Deployment to one:
    
    kubectl -n kube-system scale deployment coredns --replicas=1
+   OR
+   kubectl edit deployments -n kube-system coredns 
+      # Change the   replicas: 1
  
  
 ## Task 2 (Terminal One) - Launch a pod that will act as a client:
@@ -54,3 +57,11 @@ CoreDNS > Client: 12439 NXDomain* 0/1/0 (147)
 23:28:18.085518 IP ip-192-168-81-109.us-east-2.compute.internal.47938 > ip-192-168-0-2.us-east-2.compute.internal.domain: 50998+ A? amazon.com. (28)
 23:28:18.095343 IP ip-192-168-0-2.us-east-2.compute.internal.domain > ip-192-168-81-109.us-east-2.compute.internal.47938: 50998 3/0/0 A 176.32.98.166, A 205.251.242.103, A 176.32.103.205 (76)
 23:28:18.095457 IP ip-192-168-81-109.us-east-2.compute.internal.domain > ip-192-168-51-133.us-east-2.compute.internal.58005: 50998 3/0/0 A 205.251.242.103, A 176.32.103.205, A 176.32.98.166 (106)
+
+
+## Task 6 (Terminal One) - Resize the CoreDNS Deployment to two:
+   
+   kubectl -n kube-system scale deployment coredns --replicas=2
+   OR
+   kubectl edit deployments -n kube-system coredns 
+      # Change the   replicas: 2
