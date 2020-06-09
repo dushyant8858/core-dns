@@ -16,6 +16,7 @@ spec:
     searches:
       - ns1.svc.cluster.local
       - my.dns.search.suffix
+      - dns.google
     options:
       - name: ndots
         value: "2"
