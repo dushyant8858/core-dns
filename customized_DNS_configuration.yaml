@@ -1,0 +1,28 @@
+## Tasks
+## 1.Launch a pod with customized DNS configuration
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: default
+  name: dns-example
+spec:
+  containers:
+    - name: test
+      image: nginx
+  dnsPolicy: "None"
+  dnsConfig:
+    nameservers:
+      - 1.2.3.4
+    searches:
+      - ns1.svc.cluster.local
+      - my.dns.search.suffix
+    options:
+      - name: ndots
+        value: "2"
+
+#################
+## 2. Check if the configuration was correctly applied:
+  #kubectl exec -it dns-example — cat /etc/resolv.conf
+    #nameserver 1.2.3.4
+    #search ns1.svc.cluster.local my.dns.search.suffix
+    #options ndots:2
