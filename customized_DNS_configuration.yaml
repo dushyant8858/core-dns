@@ -12,7 +12,7 @@ spec:
   dnsPolicy: "None"
   dnsConfig:
     nameservers:
-      - 1.2.3.4
+      - 8.8.8.8
     searches:
       - ns1.svc.cluster.local
       - my.dns.search.suffix
@@ -26,3 +26,5 @@ spec:
     #nameserver 1.2.3.4
     #search ns1.svc.cluster.local my.dns.search.suffix
     #options ndots:2
+
+## kubectl exec -it dns-example -- apt update -y; apt install dnsutils; dig amazon.com +short
